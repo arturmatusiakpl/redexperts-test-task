@@ -80,7 +80,6 @@ public class MainActivity extends Activity implements DownloadManagerListener, O
     intentFilter = new IntentFilter();
     intentFilter.addAction(intentActionGps);
 
-    checkGpsStatusAndSetText();
     initAlertDialog();
     initGpsStatusReceiver();
   }
@@ -132,6 +131,7 @@ public class MainActivity extends Activity implements DownloadManagerListener, O
 
   @Override
   protected void onResume() {
+    checkGpsStatusAndSetText();
     registerReceiver(gpsStatusReceiver, intentFilter);
     gpsManager.setGpsResumed();
     gpsManager.getLocation();
