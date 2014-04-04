@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
@@ -163,17 +164,18 @@ public class MainActivity extends Activity implements DownloadManagerListener, O
     if (downloadErr == DOWNLOAD_ERROR.ER_OK) {
       json.parse(result);
       if ((jsonError = json.getError()) == JSON_ERROR.ER_OK)
-        addPinAndClearMap(json.getPin());
+        addPinZoomAndClearMap(json.getPin());
       else
         Toast.makeText(this, formatters.translateErrorCode(json.getError()), Toast.LENGTH_SHORT).show();
     } else
       Toast.makeText(this, formatters.translateErrorCode(downloadErr), Toast.LENGTH_SHORT).show();
   }
 
-  private void addPinAndClearMap(Pin pin) {
+  private void addPinZoomAndClearMap(Pin pin) {
     if (isPlaySevicesAvailable && googleMap != null) {
       googleMap.clear();
       googleMap.addMarker(new MarkerOptions().position(new LatLng(pin.location.latitude, pin.location.longitude)).title(pin.text));
+      googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pin.location.latitude, pin.location.longitude), 7));
     }
   }
 
